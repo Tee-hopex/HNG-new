@@ -2,9 +2,10 @@
 const express = require('express');
 const axios = require('axios');
 const app = express();
-const PORT = process.env.PORT || 3000;
+require("dotenv").config()
+const PORT = process.env.PORT
 
-app.get('/api/hello', async (req, res) => {
+app.use('/api/hello', async (req, res) => {
   const visitorName = req.query.visitor_name || "Visitor";
   const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
@@ -27,6 +28,6 @@ app.get('/api/hello', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
+app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
