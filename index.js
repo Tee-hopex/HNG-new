@@ -2,13 +2,12 @@
 const express = require('express');
 const axios = require('axios');
 const app = express();
-require("dotenv").config()
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3000;
 
-app.use('/api/hello', async (req, res) => {
+app.get('/api/hello', async (req, res) => {
   const visitorName = req.query.visitor_name || "Visitor";
   const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-
+  console.log(clientIp)
   try {
     // Use a free geolocation API to get the client's location
     const geoResponse = await axios.get(`https://ipapi.co/${clientIp}/json/`);
@@ -26,8 +25,8 @@ app.use('/api/hello', async (req, res) => {
   } catch (error) {
     res.status(500).send('Error retrieving data');
   }
-});
+  });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(PORT, () => {
+  console.log('Server is running on port ' + PORT);
 });
