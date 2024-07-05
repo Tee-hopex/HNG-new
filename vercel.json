@@ -2,7 +2,7 @@
     "version": 2,
     "builds": [
       {
-        "src": "api/*.js",
+        "src": "api/hello.js",
         "use": "@vercel/node"
       }
     ],
@@ -11,6 +11,8 @@
         "src": "/api/hello",
         "dest": "/api/hello.js"
       }
-    ]
+    ],
+    "buildCommand": "npm run build"
   }
+  
   
