@@ -1,13 +1,12 @@
-
+// api/hello.js
 const express = require('express');
 const axios = require('axios');
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 app.get('/api/hello', async (req, res) => {
   const visitorName = req.query.visitor_name || "Visitor";
   const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  console.log(clientIp)
+
   try {
     // Use a free geolocation API to get the client's location
     const geoResponse = await axios.get(`https://ipapi.co/${clientIp}/json/`);
@@ -20,13 +19,14 @@ app.get('/api/hello', async (req, res) => {
     res.json({
       client_ip: clientIp,
       location: location,
-      greeting: `Hello, ${visitorName}!, the temperature is ${temperature} degrees Celsius in ${location}`
+      greeting: `Hello, ${visitorName}! The temperature is ${temperature} degrees Celsius in ${location}.`
     });
   } catch (error) {
     res.status(500).send('Error retrieving data');
   }
-  });
-
-app.listen(PORT, () => {
-  console.log('Server is running on port ' + PORT);
 });
+
+// Export as a Vercel serverless function
+module.exports = (req, res) => {
+  app(req, res);
+};
